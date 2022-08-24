@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+<ui:composition template="/WEB-INF/plantilla.xhtm">
+    <ui:define name="head">
+        <h:outputStylesheet library="css" name="mapbox-gl.css"/>
+        <h:outputScript library="js" name="mapbox-gl.js"/>
+        <h:outputScript library="js" name="script_lugar.js"/>
+    </ui:define>
+    <ui:define name="title">Unilocal | Detalle Lugar</ui:define>
+    <ui:define name="content">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-7 col-md-1">
+                    <div class="box box-stretched">
+                        <p:galleria value="#{detalleLugarBean.lugar.imagen}" var="Imagen" panelHeight="425">
+                            <p:graphicImage url="/uploads/#{imagen}" alt="Image Description for #{imgane}"/>
+                        </p:galleria>
+                    </div>
+                </div>
+
+                <div class ="col-lg-5 col-md-1">
+                    <div class="p-grid">
+                        <div class="box">
+                            <p:rating value="#{detalleLugarBean.calificacionPromedio}" readonly="true"/>
+                            <h1 class="mt-4">#{detalleLugarBean.lugar.nombre}</h1>
+
+                            <h:form id="favorito-lugar">
+                                <p:commandButton icon="#{detalleLugarBean.icono}" alt="Marcar como favorito" title="Marcar como favorito" styleClass="rounded-bottom ui-button-warning"/>
+
+                            </h:form>
+                        </div>
+                        <div class="box">
+                            <p>Ciudad: "#{detalleLugarBean.lugar.ciudad.nombre}" </p>
+                            <h:inputHidden id = "pos-lat-d" value="#{detalleLugarBean.lugar.latitud}"/>
+                            <h:inputHidden id="pos-lng-d" value="#{detalleLugarBean.lugar.longitud}"/>
+                        </div>
+                        <p:dataList emptyMessage="No hay horarios para este lugar" styleClass="Lista-carac" value="#{detalleLugarBean.horarios}" var="horario">
+                            <f:facet name="header">Horarios</f:facet>
+                            <p>#{horario.dia}, #{horario.horaApertura}-#{horario.horaCierre}</p>
+                        </p:dataList>
+                    </div>
+                </div>
+            </div>
+            <div id = "mapa" style="..."></div>
+        <p:panel header="Hacer un comentario" styleClass="mt-3" rendered="#{seguridadBean.autenticado}">
+            <h:form id="crear-comentario">
+                <h:panelGrid columns="2" cellpadding="3">
+                    <p:inputTextarea value="#{detalleLugarBean.nuevoComenatrio.comentario}" required="true" styleClass="comentario-usuario"/>
+                    <p:rating value="#{detalleLugarBean.nuevoComenatrio.calificacion}" required="true"/>
+                </h:panelGrid>
+                <p:commandButton value="Comentar" icon="pi pi-comment" iconPos="left" update="@form, lista-c" styleClass="mt-4" action="#{detalleLugarBean.crearComentario}"/>
+                <p:growl for="msj-pregunta" showDetail="true"/>
+                </h:form>
+        </p:panel>
+
+        <p:panel header="Comentarios" styleClass="mt-3">
+            <div class="blog-comment">
+                <ul class="comments">
+
+                </ul>
+            </div>
+        </p:panel>
+
+    </ui:define>
+</ui:composition>
+
+</html>

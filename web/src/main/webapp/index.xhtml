@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+    <ui:define name="head">
+        <h:outputStylesheet library="css" name="mapbox-gl.css"/>
+        <h:outputScript library="js" name="mapbox-gl.js"/>
+        <h:outputScript library="js" name="script-home.js"/>
+    </ui:define>
+
+    <ui:define name="title">Unilocal | Home</ui:define>
+    <ui:define name="content">
+        <div id="mapa">
+            <div id='map' style="visibility: hidden "></div>
+
+        </div>
+        <div class="container">
+            <div class="">
+                <div>
+                    <h2>Categorías</h2>
+                </div>
+                <div>
+                    <p>Lista categorías</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div>
+                    <h2>Lugares más populares</h2>
+                </div>
+                <div class="mt-3">
+                    <h:form id="form">
+                        <h2>Lista de lugares</h2>
+                        <p:dataView var="lugar" value="#{inicioBean.lugares}" rows="12" paginator="true"
+                                    gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+
+                            <p:dataViewGridItem>
+                                <div class="card" style="width: 18rem;">
+                                    <p>Aqui deberia tener una imagen</p>
+                                    <img src="/uploads/#{lugar.imagenPrincipal}" class="card-img-top" alt="..."/>
+                                    <div class="card-body">
+                                        <h5 class="card-title">#{lugar.nombre}</h5>
+                                        <p class="card-text">#{lugar.descripcion}</p>
+                                        <p:commandButton value="Ver detalle" action="#{inicioBean.irDetalle(lugar.id)}"
+                                                         styleClass="ui-button-raised" icon="pi pi-arrow-right"
+                                                         iconPos="right"/>
+                                    </div>
+                                </div>
+                            </p:dataViewGridItem>
+
+                            <p:dataViewListItem>
+                                <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
+                                    <p:graphicImage url="/uploads/#{lugar.imagenPrincipal}" style="width:20%"
+                                                    styleClass="imagen-lugar"/>
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <h:outputText value="Nombre:"/>
+                                            <h:outputText value="#{lugar.nombre}" style="font-weight: bold"/>
+                                            <h:outputText value="Tipo:"/>
+                                            <h:outputText value="#{lugar.categoria.nombre}"/>
+                                            <h:outputText value="Descripción:"/>
+                                            <h:outputText value="#{lugar.descripcion}"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+                                    <p:commandButton value="Ver detalle" action="#{inicioBean.irADetalle(lugar.id)}"
+                                                     styleClass="ui-button-raised" icon="pi pi-arrow-right"
+                                                     iconPos="right"/>
+                                </h:panelGrid>
+                            </p:dataViewListItem>
+
+                        </p:dataView>
+                    </h:form>
+                </div>
+
+
+            </div>
+
+        </div>
+    </ui:define>
+</ui:composition>
+
+
+</html>

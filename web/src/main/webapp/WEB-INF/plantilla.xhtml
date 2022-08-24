@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+    <h:outputScript library="js" name="bootstrap.bundle.min.js"/>
+    <h:outputStylesheet library="css" name="style.css"/>
+    <ui:insert name="head"></ui:insert>
+    <title><ui:insert name="title">Título</ui:insert></title>
+</h:head>
+<h:body>
+    <div id="header">
+        <ui:insert name="header">
+            <nav class="navbar navbar-expand-lg py-3 navbar-dark bg-dark">
+                <div class="container">
+                    <a class="navbar-brand" href="/"><i class="pi pi-map-marker"></i> Unilocal</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarColor02"
+                            aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarColor02">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/">Inicio</a>
+                            </li>
+                            <li class="nav-item" jsf:rendered="#{!seguridadBean.autenticado}">
+                                <a class="nav-link" href="/registrarUsuario.xhtml">Registrarse</a>
+                            </li>
+                            <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol == 'usuario'}">
+                                <a class="nav-link" href="/usuario/crearLugar.xhtml">Crear Lugar</a>
+                            </li>
+                            <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado}">
+                                <a class="nav-link" href="/usuario/perfil.xhtml">Perfil</a>
+                            </li>
+                            <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol == 'admin'}">
+                                <a class="nav-link" href="/administrador/crearModerador.xhtml">Crear Moderador</a>
+                            </li>
+                            <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol == 'admin'}">
+                                <a class="nav-link" href="/administrador/administracion.xhtml">Administracion</a>
+                            </li>
+                            <li class="nav-item" jsf:rendered="#{seguridadBean.autenticado and seguridadBean.rol == 'moderador'}">
+                                <a class="nav-link" href="/moderador/aprobarLugar.xhtml">Registrar lugares</a>
+                            </li>
+                        </ul>
+                        <div class="d-flex">
+                            <h:form class="d-flex me-2">
+                                <p:inputText styleClass="form-control me-2 input-search"
+                                             placeholder="¿Qué está buscando?"
+                                             value="#{busquedaBean.busqueda}"/>
+                                <p:commandButton styleClass="btn btn-outline-light btn-buscar" value="Buscar"
+                                                 action="#{busquedaBean.buscar}"/>
+                            </h:form>
+                            <p:commandButton styleClass="ui-button-raised ui-button-warning" value="Iniciar" icon="pi pi-user" iconPos="left"  onclick="PF('login').show()"  rendered="#{!seguridadBean.autenticado}"/>
+                            <p:commandButton styleClass="ui-button-raised ui-button-warning" value="Salir" icon="pi pi-sign-out" iconPos="left" action="#{seguridadBean.cerrarSesion}" rendered="#{seguridadBean.autenticado}"/>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <p:dialog header="Iniciar Sesion" showEffect="fade" widgetVar="login" modal="true"  rendered="#{!seguridadBean.autenticado}">
+                <h:form >
+                    <h:panelGrid columns="3" cellpadding="5">
+                        <p:outputLabel for="email_login" value="Email:" />
+                        <p:inputText id="email_login" value="#{seguridadBean.email}" required="true" />
+                        <p:message for="email_login" />
+                        <p:outputLabel for="contrasena_login" value="Contraseña:" />
+                        <p:password id="contrasena_login" value="#{seguridadBean.contrasena}" required="true" />
+                        <p:message for="contrasena_login"  />
+                    </h:panelGrid>
+                    <p:commandButton value="Iniciar Sesión"  action="#{seguridadBean.iniciarSesion}" update="@form" icon="pi pi-sign-in" iconPos="left"/>
+
+                    <p:growl for="login-bean" showDetail="true" />
+                </h:form>
+            </p:dialog>
+
+
+        </ui:insert>
+    </div>
+    <div id="content">
+        <ui:insert name="content">Contenido</ui:insert>
+    </div>
+    <div id="footer" class="footer">
+        <ui:insert name="footer">
+            <div class="py-4 bg-light" align="center">
+                <div class="justify-content-center">
+                    <div class="col-10">
+                        <span>Universidad del Quindío - Programación avanzada - 2021</span>
+                    </div>
+                </div>
+            </div>
+
+        </ui:insert>
+    </div>
+
+
+</h:body>
+</html>

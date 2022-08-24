@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+
+<ui:composition template="/WEB-INF/plantilla.xhtml">
+    <ui:define name="head">
+        <h:outputStylesheet library="css" name="mapbox-gl.css"/>
+        <h:outputScript library="js" name="mapbox-gl.js"/>
+        <h:outputScript library="js" name="script_lugar.js"/>
+    </ui:define>
+    <ui:define name="title">Unilocal | Crear Lugar</ui:define>
+    <ui:define name="content">
+        <div class="container mt-4 mb-4">
+            <p:panel header="Crear nuevo lugar">
+                <div class="row">
+                    <div class="col">
+                        <div id="mapa" style="width: 400px; height: 400px"></div>
+                    </div>
+                    <div class="col">
+                        <h:form id="crear_lugar">
+
+                            <h:inputHidden id="lat_lugar" value="#{lugarBean.lugar.latitud}"/>
+                            <h:inputHidden id="lng_lugar" value="#{lugarBean.lugar.longitud}"/>
+
+                            <h:panelGrid columns="3" cellpadding="5">
+
+                                <p:outputLabel for="nombre_lugar" value="Nombre:"/>
+                                <p:inputText id="nombre_lugar" value="#{lugarBean.lugar.nombre}"/>
+                                <p:message for="nombre_lugar"/>
+
+                                <p:outputLabel for="direccion_lugar" value="Dirección:"/>
+                                <p:inputText id="direccion_lugar" value="#{lugarBean.lugar.direccion}"/>
+                                <p:message for="direccion_lugar"/>
+
+                                <p:outputLabel for="telefono_lugar" value="Teléfono:"/>
+                                <p:inputText id="telefono_lugar" value="#{lugarBean.telefono.numero}"/>
+                                <p:message for="telefono_lugar"/>
+
+                                <p:outputLabel for="ciudad_lugar" value="Ciudad:"/>
+                                <p:selectOneMenu id="ciudad_lugar" value="#{lugarBean.lugar.ciudad}"
+                                                 converter="#{ciudadConverter}" required="true"
+                                                 requiredMessage="La ciudad es obligatoria">
+                                    <f:selectItem itemLabel="Seleccione la ciudad" noSelectionOption="true"/>
+                                    <f:selectItems var="ciudad" itemLabel="#{ciudad.nombre}"
+                                                   value="#{lugarBean.ciudades}"/>
+                                </p:selectOneMenu>
+                                <p:message for="ciudad_lugar"/>
+
+                                <p:outputLabel for="categoria_lugar" value="Categoria:"/>
+                                <p:selectOneMenu id="categoria_lugar" value="#{lugarBean.lugar.categoria}"
+                                                 converter="#{categoriaConverter}" required="true"
+                                                 requiredMessage="La Categoria es obligatoria">
+                                    <f:selectItem itemLabel="Seleccione una categoria" noSelectionOption="true"/>
+                                    <f:selectItems var="categorias" itemLabel="#{categorias.nombre}"
+                                                   value="#{lugarBean.categorias}"/>
+                                </p:selectOneMenu>
+                                <p:message for="categoria_lugar"/>
+
+                                <p:outputLabel for="imagenes_lugar" value="Imágenes:"/>
+                                <p:fileUpload id="imagenes_lugar"
+                                              listener="#{lugarBean.subirImagenes}" node="advanced"
+                                              multiple="true" sizeLimit="1000000" fileLimit="5"
+                                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true"/>
+
+                                <p:outputLabel for="descripcion_lugar" value="Descripción:"/>
+                                <p:inputText id="descripcion_lugar" value="#{lugarBean.lugar.descripcion}"/>
+                                <p:message for="descripcion_lugar"/>
+                            </h:panelGrid>
+                            <p:commandButton action="#{lugarBean.crearLugar}" value="Crear nuevo lugar" update="@form"/>
+                            <p:growl for="mensaje_bean" showDetail="true"/>
+                        </h:form>
+                    </div>
+                </div>
+            </p:panel>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>
