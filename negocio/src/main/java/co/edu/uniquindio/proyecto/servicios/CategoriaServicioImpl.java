@@ -21,7 +21,7 @@ public class CategoriaServicioImpl implements CategoriaServicio {
     public Categoria obtenerCategoria(Integer id) throws Exception {
 
         Optional<Categoria> objeto = categoriaRepo.findById(id);
-        if (objeto.isEmpty()) {
+        if (!objeto.isPresent()) {
             throw new Exception("El id no es válido");
         }
         return objeto.get();

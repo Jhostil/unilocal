@@ -30,7 +30,7 @@ public class CiudadServicioImpl implements CiudadServicio {
 
         Optional<Ciudad> objeto = ciudadRepo.findById(id);
 
-        if (objeto.isEmpty()) {
+        if (!objeto.isPresent()) {
             throw new Exception("El id no es válido");
         }
         return objeto.get();

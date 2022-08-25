@@ -160,7 +160,7 @@ public class LugarServicioImpl implements LugarServicio {
     public Lugar obtenerLugar(Integer id) throws Exception {
         Optional<Lugar> objeto = lugarRepo.findById(id);
 
-        if (objeto.isEmpty()) {
+        if (!objeto.isPresent()) {
             throw new Exception("El id no es valido");
         }
         return objeto.get();
@@ -174,7 +174,7 @@ public class LugarServicioImpl implements LugarServicio {
     @Override
     public Categoria obtenerCategoria(Integer id) throws Exception {
         Optional<Categoria> objeto = categoriaRepo.findById(id);
-        if (objeto.isEmpty()) {
+        if (!objeto.isPresent()) {
             throw new Exception("El Id no es valido");
         }
         return objeto.get();

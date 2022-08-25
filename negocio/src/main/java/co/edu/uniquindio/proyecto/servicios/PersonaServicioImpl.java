@@ -20,7 +20,7 @@ public class PersonaServicioImpl implements PersonaServicio {
     public Persona login(String email, String contrasena) throws Exception {
         Optional<Persona> persona=personaRepo.findByEmailAndContrasena(email,contrasena);
 
-        if(persona.isEmpty()){
+        if(!persona.isPresent()){
 
             throw new Exception("Los datos de autenticacion son incorrectos");
         }
